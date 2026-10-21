@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#080608">
+  <title>For My Karil ♡</title>
+  <style>
+    :root {
+      --pink: #ff82a5;
+      --soft-pink: #c77b91;
+      --bg: #080608;
+      --page-pad: clamp(14px, 4vw, 36px);
+    }
+    * { box-sizing: border-box; }
+    html { min-height: 100%; scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0; min-height: 100vh; min-height: 100svh; overflow-x: hidden;
+      background: radial-gradient(ellipse at 50% 42%, rgba(91,20,46,.18), transparent 48%), var(--bg);
+      color: #f8eaf0; font-family: Arial, Helvetica, sans-serif;
+    }
+    .wallpaper {
+      position: fixed; inset: -8%; z-index: 0; overflow: hidden; pointer-events: none;
+      opacity: .48; transform: rotate(-2deg) scale(1.08);
+    }
+    .wallpaper-row {
+      display: flex; align-items: center; width: max-content; min-width: 120%;
+      height: clamp(32px, 6.8vh, 70px); white-space: nowrap; color: var(--soft-pink);
+      font: 500 clamp(9px, 1.15vw, 15px)/1 monospace;
+      letter-spacing: clamp(1px, .18vw, 2px); animation: drift 24s ease-in-out infinite alternate;
+    }
+    .wallpaper-row:nth-child(even) { animation-direction: alternate-reverse; animation-duration: 30s; }
+    @keyframes drift { from { transform: translateX(-1.5%); } to { transform: translateX(1.5%); } }
+
+    main {
+      position: relative; z-index: 1; width: 100%; min-height: 100vh; min-height: 100svh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center;
+      padding: max(22px, env(safe-area-inset-top)) var(--page-pad) max(24px, env(safe-area-inset-bottom));
+      isolation: isolate;
+    }
+    .heading {
+      margin: 0 0 clamp(20px, 4vh, 38px); text-transform: uppercase;
+      letter-spacing: clamp(3px, .65vw, 7px); font-size: clamp(11px, 1.5vw, 18px);
+      line-height: 1.4; font-weight: 500; color: #f4c6d4;
+    }
+    .name {
+      display: block; margin-top: 6px; text-transform: none; letter-spacing: 1px;
+      font-family: "Brush Script MT", "Segoe Script", cursive;
+      font-size: clamp(54px, 9.5vw, 108px); line-height: 1.05; font-weight: 400;
+      color: var(--pink); text-shadow: 0 0 14px rgba(255,91,140,.32); overflow-wrap: anywhere;
+    }
+    .name-heart { display: inline-block; font-family: Georgia,serif; font-size: .42em; vertical-align: top; margin: .25em 0 0 4px; transform: rotate(15deg); }
+    .portrait-wrap {
+      position: relative; width: min(550px, 78vw, 68svh); max-width: 100%; margin: 0 auto;
+      padding: clamp(2px, .45vw, 4px); border: 1px solid var(--pink);
+      background: rgba(255,130,165,.06);
+      box-shadow: 0 0 24px rgba(255,67,123,.14), 0 0 70px rgba(255,67,123,.07);
+    }
+    .portrait-wrap::before, .portrait-wrap::after {
+      content: "♡"; position: absolute; z-index: 2; color: var(--pink); font-family: Georgia,serif;
+      font-size: clamp(25px, 4.4vw, 48px); line-height: 1;
+      text-shadow: 0 0 12px rgba(255,130,165,.45); pointer-events: none;
+    }
+    .portrait-wrap::before { left: clamp(-16px, -2vw, -9px); top: clamp(-17px, -2vw, -9px); transform: rotate(-18deg); }
+    .portrait-wrap::after { right: clamp(-16px, -2vw, -9px); bottom: clamp(-17px, -2vw, -9px); transform: rotate(14deg); }
+    .portrait {
+      display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover;
+      object-position: center 42%; filter: grayscale(100%) contrast(1.04) brightness(.91);
+    }
+    .doodle {
+      position: absolute; z-index: 2; color: var(--pink); font-family: Georgia,serif;
+      font-size: clamp(24px, 3.5vw, 34px); opacity: .9; pointer-events: none;
+      text-shadow: 0 0 10px rgba(255,130,165,.3);
+    }
+    .doodle.one { top: 34%; left: max(5%, calc(50% - 360px)); transform: rotate(-15deg); }
+    .doodle.two { top: 53%; right: max(5%, calc(50% - 355px)); transform: rotate(18deg); }
+
+    .music-control {
+      display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+      margin-top: clamp(22px, 4vh, 34px); padding: 11px 17px; max-width: 100%;
+      border: 1px solid rgba(255,130,165,.72); border-radius: 999px;
+      background: rgba(27,8,17,.78); color: #ffdce6; font-size: 13px;
+      letter-spacing: 1px; cursor: pointer; -webkit-tap-highlight-color: transparent;
+      transition: background .2s ease, transform .2s ease;
+    }
+    .music-control:hover { background: rgba(112,30,59,.75); }
+    .music-control:active { transform: scale(.98); }
+    .music-note { color: var(--pink); font-size: 17px; }
+    .music-status { min-height: 1em; margin: 8px 0 0; color: #c995a7; font-size: 11px; letter-spacing: .5px; }
+
+    @media (max-width: 480px) {
+      main { justify-content: center; padding-top: max(28px, env(safe-area-inset-top)); padding-bottom: max(28px, env(safe-area-inset-bottom)); }
+      .heading { margin-bottom: clamp(22px, 4vh, 32px); letter-spacing: 3px; }
+      .name { font-size: clamp(52px, 16vw, 78px); }
+      .portrait-wrap { width: min(88vw, 46svh); }
+      .portrait { aspect-ratio: 4 / 4.4; object-position: center 42%; }
+      .doodle.one { top: 36%; left: 3%; }
+      .doodle.two { top: 61%; right: 3%; }
+      .wallpaper-row { height: 5.8vh; font-size: 10px; letter-spacing: 1px; }
+      .music-control { margin-top: 23px; font-size: 12px; }
+    }
+    @media (max-height: 600px) and (orientation: landscape) {
+      main { min-height: 100svh; padding-top: 18px; padding-bottom: 18px; }
+      .heading { margin-bottom: 14px; font-size: 11px; }
+      .name { font-size: clamp(42px, 9vh, 64px); }
+      .portrait-wrap { width: auto; height: 48svh; max-width: min(70vw, 480px); }
+      .portrait { width: 100%; height: 100%; aspect-ratio: auto; }
+      .doodle { display: none; }
+      .music-control { margin-top: 12px; padding: 8px 14px; }
+      .music-status { margin-top: 4px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wallpaper" id="wallpaper" aria-hidden="true"></div>
+
+  <!-- Add your legally obtained audio file in this folder and name it balisong.mp3 -->
+  <audio id="ourSong" src="balisong.mp3" preload="auto" loop></audio>
+
+  <main>
+    <h1 class="heading">
+      For my
+      <span class="name">Karil<span class="name-heart">♡</span></span>
+    </h1>
+
+    <span class="doodle one" aria-hidden="true">♡</span>
+    <span class="doodle two" aria-hidden="true">♡</span>
+
+    <figure class="portrait-wrap">
+      <img class="portrait" src="karil.jpg" alt="A photo of us together">
+    </figure>
+
+    <button class="music-control" id="musicButton" type="button">
+      <span class="music-note" aria-hidden="true">♫</span>
+      <span id="buttonLabel">Play our song</span>
+    </button>
+    <p class="music-status" id="musicStatus" aria-live="polite">Balisong — Rico Blanco</p>
+  </main>
+
+  <script>
+    const wallpaper = document.getElementById("wallpaper");
+    const phrase = "I LOVE YOU　♡";
+    const rowCount = Math.ceil(window.innerHeight / 42) + 5;
+
+    for (let i = 0; i < rowCount; i++) {
+      const row = document.createElement("div");
+      row.className = "wallpaper-row";
+      row.textContent = Array(10).fill(phrase).join("　");
+      row.style.animationDelay = `${i * -0.7}s`;
+      wallpaper.appendChild(row);
+    }
+
+    const song = document.getElementById("ourSong");
+    const musicButton = document.getElementById("musicButton");
+    const buttonLabel = document.getElementById("buttonLabel");
+    const musicStatus = document.getElementById("musicStatus");
+
+    async function playSong() {
+      try {
+        await song.play();
+        buttonLabel.textContent = "Pause our song";
+        musicStatus.textContent = "Now playing: Balisong — Rico Blanco ♡";
+      } catch (error) {
+        buttonLabel.textContent = "Play our song";
+        musicStatus.textContent = "Tap to play Balisong ♡";
+      }
+    }
+
+    musicButton.addEventListener("click", async () => {
+      if (song.paused) {
+        await playSong();
+      } else {
+        song.pause();
+        buttonLabel.textContent = "Play our song";
+        musicStatus.textContent = "Paused";
+      }
+    });
+
+    // Try autoplay on page load. Some browsers require a tap before audio can play.
+    window.addEventListener("load", () => {
+      playSong();
+    });
+  </script>
+</body>
+</html>
