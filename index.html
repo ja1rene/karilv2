@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f1e4cf">
+  <title>For My Karil ♡</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #f1e4cf;
+      --ink: #3a2230;
+      --pink: #e8456f;
+      --pink-soft: #f29bb3;
+      --tape: rgba(255, 214, 120, .78);
+      --hand: "Caveat", "Segoe Script", "Bradley Hand", cursive;
+    }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0; min-height: 100vh; min-height: 100svh; overflow-x: hidden;
+      background-color: var(--paper); color: var(--ink); font-family: var(--hand);
+      /* paper grain */
+      background-image:
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .35  0 0 0 0 .22  0 0 0 0 .2  0 0 0 .09 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    }
+
+    /* ---------- handwritten background lines ---------- */
+    .scribbles {
+      position: fixed; inset: -10% -10%; z-index: 0; pointer-events: none;
+      transform: rotate(-4deg); overflow: hidden;
+    }
+    .scribbles p {
+      margin: 0; white-space: nowrap; color: var(--pink); opacity: .17;
+      font-size: clamp(22px, 3.4vw, 34px); line-height: 1.55; letter-spacing: 2px;
+    }
+    .scribbles p:nth-child(3n) { opacity: .1; transform: translateX(-4%); }
+    .scribbles p:nth-child(4n) { opacity: .13; transform: translateX(-9%); }
+
+    /* ---------- envelope gate ---------- */
+    .gate {
+      position: fixed; inset: 0; z-index: 10; display: grid; place-items: center;
+      padding: 20px; perspective: 900px;
+      transition: opacity .6s ease .1s, visibility 0s linear .8s;
+    }
+    .gate.gone { opacity: 0; visibility: hidden; pointer-events: none; }
+    .gate-hint {
+      position: absolute; top: calc(50% - min(31vw, 150px) - 62px);
+      margin: 0; font-size: clamp(26px, 5.5vw, 34px); font-weight: 700; text-align: center;
+    }
+    .envelope {
+      position: relative; width: min(340px, 84vw); aspect-ratio: 3 / 2;
+      background: #e8d2ac; border-radius: 4px;
+      box-shadow: 0 2px 0 #cdb184, 0 14px 28px rgba(60,30,30,.28);
+      transform: rotate(-3deg);
+      animation: breathe 3.2s ease-in-out infinite;
+      transition: transform .7s cubic-bezier(.5,-0.3,.6,1), opacity .5s ease .35s;
+    }
+    @keyframes breathe { 50% { transform: rotate(-1.5deg) translateY(-5px); } }
+    .envelope::before { /* side + bottom folds */
+      content: ""; position: absolute; inset: 0; border-radius: 4px;
+      background:
+        linear-gradient(to top right, transparent 49.4%, rgba(90,50,30,.22) 50%, transparent 50.8%) left / 50% 100% no-repeat,
+        linear-gradient(to top left,  transparent 49.4%, rgba(90,50,30,.22) 50%, transparent 50.8%) right / 50% 100% no-repeat;
+    }
+    .flap {
+      position: absolute; left: 0; top: 0; width: 100%; height: 58%;
+      background: #dcc297; clip-path: polygon(0 0, 100% 0, 50% 100%);
+      transform-origin: top center; transition: transform .7s ease;
+      filter: drop-shadow(0 3px 2px rgba(60,30,30,.25));
+    }
+    .seal {
+      position: absolute; left: 50%; top: 58%; width: 62px; height: 62px; margin: -31px 0 0 -31px;
+      border: 0; border-radius: 50%; cursor: pointer; z-index: 2;
+      background: radial-gradient(circle at 35% 30%, #f0637f, #c42a55 70%);
+      color: #ffe3ea; font: 700 32px/62px var(--hand); text-align: center; padding: 0;
+      box-shadow: 0 3px 0 #8f1c3d, 0 6px 10px rgba(0,0,0,.3);
+      transition: transform .15s ease, opacity .3s ease;
+    }
+    .seal:active { transform: scale(.9) translateY(2px); box-shadow: 0 1px 0 #8f1c3d; }
+    .gate.opening .flap { transform: rotateX(180deg); }
+    .gate.opening .seal { opacity: 0; }
+    .gate.opening .envelope { animation: none; transform: translateY(70vh) rotate(8deg); opacity: 0; }
+    .gate.opening .gate-hint { opacity: 0; transition: opacity .3s; }
+
+    /* ---------- scene ---------- */
+    main {
+      position: relative; z-index: 1; min-height: 100vh; min-height: 100svh;
+      display: grid; align-content: center; justify-items: center; gap: clamp(14px, 3vh, 26px);
+      padding: max(22px, env(safe-area-inset-top)) 18px max(26px, env(safe-area-inset-bottom));
+      visibility: hidden;
+    }
+    main.show { visibility: visible; }
+
+    .title { text-align: center; margin: 0; font-weight: 500; line-height: .9; }
+    .title small { display: block; font-size: clamp(26px, 5vw, 38px); color: var(--ink); transform: rotate(-4deg); }
+    .name { position: relative; display: inline-block; font-size: clamp(76px, 20vw, 132px); font-weight: 700; color: var(--pink); }
+    .underline { position: absolute; left: -4%; bottom: -10%; width: 108%; height: 26%; overflow: visible; }
+    .underline path { fill: none; stroke: var(--ink); stroke-width: 4; stroke-linecap: round; stroke-dasharray: 400; stroke-dashoffset: 400; }
+    main.show .underline path { animation: draw .9s ease-out .9s forwards; }
+    @keyframes draw { to { stroke-dashoffset: 0; } }
+
+    .stage { display: grid; justify-items: center; gap: clamp(14px, 3vh, 24px); width: 100%; }
+
+    /* polaroid */
+    .polaroid {
+      --w: min(400px, 82vw, 52svh);
+      position: relative; width: var(--w); margin: 0; padding: calc(var(--w) * .05) calc(var(--w) * .05) calc(var(--w) * .17);
+      background: #fffdf8; border-radius: 3px; cursor: pointer; user-select: none; -webkit-user-select: none;
+      box-shadow: 0 1px 2px rgba(0,0,0,.2), 0 16px 30px rgba(70,30,40,.3);
+      transform: rotate(-2.5deg); touch-action: manipulation;
+      transition: transform .25s cubic-bezier(.3,1.6,.5,1);
+    }
+    main.show .polaroid { animation: drop .9s cubic-bezier(.3,1.4,.5,1) .35s backwards; }
+    @keyframes drop { from { transform: translateY(-110vh) rotate(14deg); } }
+    .polaroid:active { transform: rotate(-1deg) scale(.985); }
+    .photo { aspect-ratio: 1 / 1; overflow: hidden; background: #2a1a20; }
+    .photo img {
+      display: block; width: 100%; height: 100%; object-fit: cover; object-position: center 35%;
+      filter: grayscale(1) sepia(.35) brightness(1.15) contrast(.85) blur(3px);
+      transition: filter 5s ease 1.4s;
+    }
+    main.show .photo img { filter: none; }
+    .caption {
+      position: absolute; left: 0; right: 0; bottom: calc(var(--w) * .035);
+      text-align: center; font-size: calc(var(--w) * .095); font-weight: 700; color: var(--ink); transform: rotate(-1deg);
+    }
+    .tape {
+      position: absolute; top: -14px; width: 92px; height: 28px; background: var(--tape);
+      box-shadow: 0 1px 2px rgba(0,0,0,.18);
+      clip-path: polygon(3% 0, 97% 4%, 100% 50%, 96% 100%, 2% 96%, 0 48%);
+    }
+    .tape.l { left: -22px; transform: rotate(-38deg); }
+    .tape.r { right: -22px; transform: rotate(36deg); }
+
+    .taps { margin: -4px 0 0; font-size: 22px; color: var(--ink); opacity: .75; text-align: center; min-height: 1.2em; }
+
+    /* record player */
+    .player { display: flex; align-items: center; gap: 16px; }
+    .record {
+      position: relative; width: 84px; height: 84px; border-radius: 50%; flex: none;
+      background: repeating-radial-gradient(circle, #1b1216 0 2px, #2a1d23 2px 4px);
+      box-shadow: 0 6px 12px rgba(0,0,0,.35);
+    }
+    .record::before { /* label */
+      content: "♥"; position: absolute; inset: 31%; border-radius: 50%; background: var(--pink);
+      color: #ffe3ea; font: 700 16px/1 var(--hand); display: grid; place-items: center;
+    }
+    .record::after { /* spindle */
+      content: ""; position: absolute; left: 50%; top: 50%; width: 6px; height: 6px; margin: -3px; border-radius: 50%; background: var(--paper);
+    }
+    .record.spin { animation: spin 2.4s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .music-wrap { display: grid; gap: 4px; justify-items: start; }
+    .music-control {
+      font: 700 24px/1 var(--hand); color: var(--ink); background: #fffdf8; cursor: pointer;
+      border: 2.5px solid var(--ink); border-radius: 255px 15px 225px 15px/15px 225px 15px 255px; /* hand-drawn wobble */
+      padding: 10px 20px; box-shadow: 3px 4px 0 var(--ink);
+      transition: transform .12s ease, box-shadow .12s ease;
+    }
+    .music-control:active { transform: translate(3px, 4px); box-shadow: 0 0 0 var(--ink); }
+    .music-status { margin: 0; font-size: 19px; opacity: .75; }
+
+    /* floating hearts from taps */
+    .pop {
+      position: fixed; z-index: 20; pointer-events: none; color: var(--pink); font-weight: 700;
+      font-size: var(--s, 30px); animation: floatup 1.6s ease-out forwards; transform: translate(-50%, -50%);
+    }
+    @keyframes floatup {
+      0% { opacity: 1; transform: translate(-50%, -50%) scale(.4) rotate(0); }
+      15% { transform: translate(-50%, -80%) scale(1.15) rotate(calc(var(--r) * .3)); }
+      100% { opacity: 0; transform: translate(calc(-50% + var(--dx)), -260%) scale(1) rotate(var(--r)); }
+    }
+
+    /* ---------- desktop / landscape: side by side ---------- */
+    @media (min-width: 880px) and (min-height: 560px) {
+      main { grid-template-columns: auto auto; column-gap: clamp(50px, 9vw, 130px); row-gap: 0; justify-content: center; align-content: center; }
+      .title { grid-column: 2; grid-row: 1; align-self: end; margin-bottom: 18px; }
+      .stage { display: contents; }
+      .polaroid { --w: min(470px, 40vw, 70svh); grid-column: 1; grid-row: 1 / span 3; align-self: center; }
+      .taps { grid-column: 2; grid-row: 2; }
+      .player { grid-column: 2; grid-row: 3; align-self: start; justify-self: center; margin-top: 10px; }
+      .record { width: 100px; height: 100px; }
+    }
+    /* short phones in landscape */
+    @media (max-height: 520px) and (orientation: landscape) {
+      .name { font-size: 64px; }
+      .title small { font-size: 22px; }
+      .polaroid { --w: min(300px, 70svh); }
+      main { gap: 8px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .envelope { animation: none; }
+      .record.spin { animation-duration: 8s; }
+      .polaroid { animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="scribbles" id="scribbles" aria-hidden="true"></div>
+
+  <!-- Put your files in the same folder: karil.jpg and balisong.mp3 -->
+  <audio id="ourSong" src="balisong.mp3" preload="auto" loop></audio>
+
+  <!-- envelope gate (also lets the music start, since browsers need a tap first) -->
+  <div class="gate" id="gate">
+    <p class="gate-hint">for Karil &mdash; tap to open</p>
+    <div class="envelope" id="envelope">
+      <div class="flap"></div>
+      <button class="seal" id="seal" type="button" aria-label="Open the letter">♥</button>
+    </div>
+  </div>
+
+  <main id="scene">
+    <h1 class="title">
+      <small>for my</small>
+      <span class="name">Karil
+        <svg class="underline" viewBox="0 0 220 24" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M4 15 C 40 4, 70 22, 110 12 S 180 6, 216 14"/>
+        </svg>
+      </span>
+    </h1>
+
+    <div class="stage">
+      <figure class="polaroid" id="polaroid">
+        <span class="tape l"></span><span class="tape r"></span>
+        <div class="photo"><img src="karil.jpg" alt="A photo of us together" draggable="false"></div>
+        <figcaption class="caption">us ♡</figcaption>
+      </figure>
+
+      <p class="taps" id="taps">tap the photo</p>
+
+      <div class="player">
+        <div class="record" id="record" aria-hidden="true"></div>
+        <div class="music-wrap">
+          <button class="music-control" id="musicButton" type="button">♫ Play our song</button>
+          <p class="music-status" id="musicStatus">Balisong &mdash; Rico Blanco</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // --- background scribbles ---
+    (function () {
+      const box = document.getElementById("scribbles");
+      const line = Array(14).fill("I love you ♡").join("   ");
+      const rows = Math.ceil(window.innerHeight / 36) + 8;
+      for (let i = 0; i < rows; i++) {
+        const p = document.createElement("p");
+        p.textContent = line;
+        p.style.marginLeft = (-(i * 53) % 260) + "px"; // stagger so it feels written, not tiled
+        box.appendChild(p);
+      }
+    })();
+
+    const gate = document.getElementById("gate");
+    const scene = document.getElementById("scene");
+    const song = document.getElementById("ourSong");
+    const musicButton = document.getElementById("musicButton");
+    const musicStatus = document.getElementById("musicStatus");
+    const record = document.getElementById("record");
+    const polaroid = document.getElementById("polaroid");
+    const taps = document.getElementById("taps");
+
+    // --- music ---
+    function setPlaying(on) {
+      record.classList.toggle("spin", on);
+      musicButton.textContent = on ? "❚❚ Pause our song" : "♫ Play our song";
+      musicStatus.textContent = on ? "Now playing: Balisong — Rico Blanco ♡" : "Balisong — Rico Blanco";
+    }
+    async function playSong() {
+      try { await song.play(); setPlaying(true); }
+      catch (e) { setPlaying(false); musicStatus.textContent = "Tap to play Balisong ♡"; }
+    }
+    song.addEventListener("error", () => { musicStatus.textContent = "balisong.mp3 not found next to this file"; });
+    musicButton.addEventListener("click", () => {
+      if (song.paused) { playSong(); } else { song.pause(); setPlaying(false); }
+    });
+
+    // --- open the envelope ---
+    let opened = false;
+    function openLetter() {
+      if (opened) return;
+      opened = true;
+      gate.classList.add("opening");
+      playSong();                                   // user tap = autoplay allowed
+      setTimeout(() => { scene.classList.add("show"); }, 650);
+      setTimeout(() => { gate.classList.add("gone"); }, 1100);
+    }
+    document.getElementById("seal").addEventListener("click", openLetter);
+    document.getElementById("envelope").addEventListener("click", openLetter);
+
+    // --- tap the photo: hearts pop out where you touch ---
+    let count = 0;
+    const notes = ["", "again ♡", "hehe", "I love you", "I love you 3000", "jay pa!", "mi bebé", "I love you 1M"];
+    function pop(x, y) {
+      for (let i = 0; i < 3; i++) {
+        const h = document.createElement("span");
+        h.className = "pop";
+        h.textContent = Math.random() > .5 ? "♥" : "♡";
+        h.style.left = (x + (Math.random() * 40 - 20)) + "px";
+        h.style.top = y + "px";
+        h.style.setProperty("--dx", (Math.random() * 120 - 60) + "px");
+        h.style.setProperty("--r", (Math.random() * 60 - 30) + "deg");
+        h.style.setProperty("--s", (22 + Math.random() * 24) + "px");
+        h.style.animationDelay = (i * 0.09) + "s";
+        h.addEventListener("animationend", () => h.remove());
+        document.body.appendChild(h);
+      }
+    }
+    polaroid.addEventListener("pointerdown", (e) => {
+      pop(e.clientX, e.clientY);
+      count++;
+      taps.textContent = count + (count === 1 ? " heart" : " hearts") + " — " + notes[count % notes.length];
+    });
+  </script>
+</body>
+</html>
